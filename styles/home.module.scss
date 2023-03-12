@@ -1,0 +1,101 @@
+@import "colors";
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.setup {
+  width: 100%;
+  height: 100vh;
+  padding: 16px 24px;
+  background-color: $coolGray10;
+}
+
+@mixin input {
+  font-size: 16px;
+  line-height: 24px;
+  border: 1px solid $coolGray30;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  &::placeholder {
+    color: $coolGray50;
+    font-weight: 500;
+  }
+  &:focus {
+    outline: none;
+    border-color: $geekble10;
+  }
+}
+
+.card {
+  background-color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(black, .16);
+  display: flex;
+  flex-direction: column;
+  color: $black;
+  height: 100%;
+  overflow-y: scroll;
+  &Input {
+    width: 100%;
+    @include input;
+  }
+  h1 {
+    font-size: 40px;
+    margin: 20px 0 16px;
+  }
+  label {
+    font-size: 15px;
+    line-height: 24px;
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+}
+
+.word {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  grid-gap: 12px;
+  margin-bottom: 12px;
+  input, select{
+    @include input;
+    flex: 1;
+    margin: 0;
+  }
+  button {
+    background-color: $red50;
+    color: white;
+    height: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 8px 12px;
+    margin: 0;
+  }
+  &.add {
+    button {
+      background-color: $blue60;
+    }
+  }
+}
+
+.download {
+  background-color: $black;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 8px 12px;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
