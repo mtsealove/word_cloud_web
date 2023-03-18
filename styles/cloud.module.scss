@@ -1,0 +1,23 @@
+.container {
+  position: relative;
+  text-align: center;
+  aspect-ratio: 1;
+}
+
+
+.title {
+  margin: 0;
+  position: absolute;
+  font-size: 44px;
+  line-height: 60px;
+  width: 100%;
+  text-align: center;
+  top: 60px;
+}
+
+.logo {
+  position: absolute;
+  width: 180px;
+  right: 24px;
+  bottom: 24px;
+}

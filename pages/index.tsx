@@ -1,7 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { NextSeo } from 'next-seo';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef, useState } from 'react';
+import {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import html2canvas from 'html2canvas';
 import styles from '../styles/home.module.scss';
 import ColorPicker from '../components/ColorPicker';
@@ -19,6 +21,7 @@ export default function Home() {
   const [newWordText, setNewWordText] = useState<string>('');
   const [newWordRotate, setNewWordRotate] = useState<Degree>(0);
   const [fontWeight, setFontWeight] = useState<string>('700');
+  const [title, setTitle] = useState<string>('');
   const textRef = useRef<HTMLInputElement>(null);
   const MyWordCloud = useMemo(() => (
     dynamic(import('../components/MyWordCloud'), { ssr: false })
@@ -99,6 +102,12 @@ export default function Home() {
         });
     }
   };
+  useEffect(() => {
+    console.log(font);
+    if (font === 'GeekbleMalang2') {
+      setFontWeight('400');
+    }
+  }, [font]);
   return (
     <main className={styles.container}>
         <NextSeo title='해시의 워드클라우드 생성기'/>
@@ -108,6 +117,11 @@ export default function Home() {
               <label>배경 색 설정</label>
               <ColorPicker color={backgroundColor}
                            setColor={setBackgroundColor} />
+              <label>제목 설정</label>
+              <input value={title}
+                     className={styles.cardInput}
+                     placeholder='제목 입력'
+                     onChange={(e) => setTitle(e.target.value)}/>
               <label>폰트 선택</label>
               <select value={font}
                       className={styles.cardInput}
@@ -122,20 +136,24 @@ export default function Home() {
                   ))}
                   <option disabled>폰트 추가는 DM으로 부탁드려요 🙏</option>
               </select>
-              <label>폰트 두께</label>
-              <select value={fontWeight}
-                      className={styles.cardInput}
-                      onChange={(e) => setFontWeight(e.target.value)}>
-                  <option value='100'>Thin</option>
-                  <option value='200'>ExtraLight</option>
-                  <option value='300'>Light</option>
-                  <option value='400'>Regular</option>
-                  <option value='500'>Medium</option>
-                  <option value='600'>SemiBold</option>
-                  <option value='700'>Bold</option>
-                  <option value='800'>ExtraBold</option>
-                  <option value='900'>Black</option>
-              </select>
+              {font !== 'GeekbleMalang2' && (
+                <>
+                    <label>폰트 두께</label>
+                    <select value={fontWeight}
+                            className={styles.cardInput}
+                            onChange={(e) => setFontWeight(e.target.value)}>
+                        <option value='100'>Thin</option>
+                        <option value='200'>ExtraLight</option>
+                        <option value='300'>Light</option>
+                        <option value='400'>Regular</option>
+                        <option value='500'>Medium</option>
+                        <option value='600'>SemiBold</option>
+                        <option value='700'>Bold</option>
+                        <option value='800'>ExtraBold</option>
+                        <option value='900'>Black</option>
+                    </select>
+                </>
+              )}
               <label>단어 목록</label>
               {words.map((word) => (
                   <div key={`word ${word.id}`}
@@ -153,10 +171,13 @@ export default function Home() {
                              min={1}
                              type='number'
                              onChange={(e) => {
-                               editWord({
-                                 id: word.id,
-                                 value: Number(e.target.value),
-                               });
+                               const num = Number(e.target.value);
+                               if (num <= 10) {
+                                 editWord({
+                                   id: word.id,
+                                   value: Number(e.target.value),
+                                 });
+                               }
                              }}
                       />
                       <select value={word.rotate}
@@ -186,7 +207,12 @@ export default function Home() {
                              placeholder='가중치 입력(1 ~ 10)'
                              min={1}
                              max={10}
-                             onChange={(e) => setNewWordValue(Number(e.target.value))}
+                             onChange={(e) => {
+                               const num = Number(e.target.value);
+                               if (num <= 10) {
+                                 setNewWordValue(Number(e.target.value));
+                               }
+                             }}
                              onKeyDown={(e) => {
                                if (e.key === 'Enter') {
                                  addWord();
@@ -212,9 +238,11 @@ export default function Home() {
           </article>
         </section>
          <div style={{ backgroundColor }}
+              className={styles.right}
               ref={imageRef}>
              <MyWordCloud words={words}
                           font={font}
+                          title={title}
                           fontWeight={fontWeight} />
          </div>
     </main>

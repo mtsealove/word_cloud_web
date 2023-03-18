@@ -7,4 +7,21 @@
   border-radius: 8px;
   border: 2px solid $coolGray30;
   margin-bottom: 8px;
+  z-index: 2;
+}
+
+.float {
+  position: absolute;
+}
+
+.button {
+  width: 100%;
+  background-color: $geekble10;
+  border: none;
+  padding: 12px 0;
+  color: white;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: bold;
+  cursor: pointer;
 }
